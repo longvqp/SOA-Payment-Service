@@ -1,0 +1,20 @@
+.control-label {
+    font-weight: bolder;
+    margin-top: 25px;
+    margin-bottom: 1vh;
+}
+
+.loginForm {
+    background-color: rgb(255, 255, 255);
+    border-radius: 2%;
+    box-shadow: 5px 5px 15px rgb(74, 74, 74);
+
+}
+
+.row {
+    margin-top: 10vh;
+}
+
+.btn {
+    background-color: red;
+}
