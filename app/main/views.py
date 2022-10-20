@@ -5,7 +5,11 @@ from .forms import retrieve_info
 def index():
     return render_template('index.html')
 
-@main.route('/info')
-def info():
+@main.route('/tuition')
+def tuition():
     form = retrieve_info()
-    return render_template('info.html',form=form)
+    return render_template('tuition.html',form=form)
+
+@main.route('/info')
+def infor():
+    return render_template('info.html')

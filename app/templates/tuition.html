@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+    My Flask App Payment
+{% endblock %}
+
+{% block page_content%}
+
+<div class="container-fluid">
+   
+    <div class="row">
+        <div class="col-4">
+            <h1>&nbsp</h1>
+           </div>
+       <div class="col-4 loginForm">
+        <h1 style="text-align: center;">Tuition Info </h1>
+            {{ wtf.quick_form(form) }}
+            <hr>
+            <div class="row">
+                <div class="col-8">
+                    <h4>Tuition Fee: </h4>
+                </div>
+                <div class="col-4">
+                    <h4>30.000.000VND</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <h5>Semester</h5>
+                </div>
+                <div class="col-4">
+                    <h5>2</h5>
+                </div>
+            </div>
+            <hr>
+           <div class="row">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Course name</th>
+                    <th scope="col">Credit</th>
+                    <th scope="col">Fee</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Course number one</td>
+                    <td>3</td>
+                    <td>2.000.000 VND</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Course number two</td>
+                    <td>2</td>
+                    <td>3.000.000 VND</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Course number three</td>
+                    <td>3</td>
+                    <td>9.000.000 VND</td>
+                  </tr>
+                </tbody>
+              </table>
+           </div>
+
+           <div class="row">
+            <div class="btn btn-defaul">
+                Pay
+            </div>
+           </div>
+           <hr>
+       </div>
+       <div class="col-4">
+        <h1>&nbsp</h1>
+       </div>
+
+    </div>
+</div>
+
+
+{% endblock %}
