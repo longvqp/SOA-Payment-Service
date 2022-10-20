@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+    My Flask App Payment
+{% endblock %}
+
+{% block page_content%}
+
+<div class="container-fluid">
+   
+    <div class="row">
+        <div class="col-4">
+            <h1>&nbsp</h1>
+           </div>
+       <div class="col-4 loginForm">
+        <h1 style="text-align: center;"> Info </h1>
+            {{ wtf.quick_form(form) }}
+            <div class="row">
+                <div class="col-8">
+                    <h4>Tuition Fee</h4>
+                </div>
+                <div class="col-4">
+                    <h4>3.000.000VND</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <h4>Semester</h4>
+                </div>
+                <div class="col-4">
+                    <h4>2</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <h4>Course</h4>
+                </div>
+                <div class="col-4">
+                    <h4></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                <ul>
+                    <li>
+                        item 1
+                    </li>
+                    <li>
+                        item 1
+                    </li>            <li>
+                        item 1
+                    </li>            <li>
+                        item 1
+                    </li>            <li>
+                        item 1
+                    </li>
+                </ul>
+            </div>
+            <div class="col-4">
+                <ul>
+                    <li>
+                        cost 1
+                    </li>
+                    <li>
+                        cost 1
+                    </li><li>
+                        cost 1
+                    </li><li>
+                        cost 1
+                    </li><li>
+                        cost 1
+                    </li>
+                </ul>
+            </div>
+            </div>
+       </div>
+       <div class="col-4">
+        <h1>&nbsp</h1>
+       </div>
+
+    </div>
+</div>
+
+
+{% endblock %}
