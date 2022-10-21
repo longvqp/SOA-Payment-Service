@@ -70,7 +70,7 @@ class HocPhi(db.Model):
         return s.dumps({'reset': self.id , 'otp': t}).decode('utf-8')
 
 
-class Lichsu(db.Model):
+class LichSu(db.Model):
     __tablename__ = 'histories'
     id = db.Column(db.Integer, primary_key=True)
     hocphi_id = db.Column(db.Integer , db.Foreignkey('hocphis.id'), nullable=False)
