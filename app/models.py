@@ -2,7 +2,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
-from . import db, login_manager
+from . import db
 from random import randrange
 
 class User(UserMixin, db.Model):
@@ -11,7 +11,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     masv = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
-    sdt = db.Column(db.String(10), unique=True)
+    sdt = db.Column(db.String(10), unique=True) #?
     password_hash = db.Column(db.String(128))
     sodu = db.Column(db.Float, default=0)
     hocphi = db.relationship('HocPhi', backref='users', lazy=True)
@@ -40,7 +40,7 @@ class User(UserMixin, db.Model):
 class HocPhi(db.Model):
     __tablename__ = 'hocphis'
     id = db.Column(db.Integer, primary_key=True)
-    masv = db.Column(db.String(64), db.Foreignkey('users.masv'), nullable=False)
+    masv = db.Column(db.String(64), db.ForeignKey('users.masv'), nullable=False)
     sotien = db.Column(db.Float, nullable=False, default=0)
     otp = db.Column(db.Integer)
     status = db.Column(db.String(10), nullable=False , default='Wait')
@@ -73,21 +73,21 @@ class HocPhi(db.Model):
 class LichSu(db.Model):
     __tablename__ = 'histories'
     id = db.Column(db.Integer, primary_key=True)
-    hocphi_id = db.Column(db.Integer , db.Foreignkey('hocphis.id'), nullable=False)
-    masv_nop  =  db.Column(db.String(64), db.Foreignkey('users.masv'), nullable=False)
-    masv_no = db.Column(db.String(64), db.Foreignkey('hocphis.masv'), nullable=False, index=True)
-    timestamp = db.Column(db.Datetime)
+    hocphi_id = db.Column(db.Integer , db.ForeignKey('hocphis.id'), nullable=False)
+    masv_nop  =  db.Column(db.String(64), db.ForeignKey('users.masv'), nullable=False)
+    masv_no = db.Column(db.String(64), db.ForeignKey('hocphis.masv'), nullable=False, index=True)
+    timestamp = db.Column(db.DateTime)
 
 
-class AnonymousUser(AnonymousUserMixin):
-    def can(self, permissions):
-        return False
+# class AnonymousUser(AnonymousUserMixin):
+#     def can(self, permissions):
+#         return False
 
-    def is_administrator(self):
-        return False
-login_manager.anonymous_user = AnonymousUser
+#     def is_administrator(self):
+#         return False
+# login_manager.anonymous_user = AnonymousUser
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return User.query.get(int(user_id))
