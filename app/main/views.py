@@ -13,5 +13,5 @@ def tuition():
     return render_template('tuition.html',form=form)
 
 @main.route('/info')
-def infor():
+def info():
     return render_template('info.html')
