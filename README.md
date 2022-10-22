@@ -8,3 +8,7 @@
 - ~~Create Navbar~~
 - Create UI for register
 
+**Page Function**
+- Register Account
+- Managing Account Ballance
+
