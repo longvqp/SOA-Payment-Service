@@ -71,12 +71,13 @@ class HocPhi(db.Model):
 
 
 class LichSu(db.Model):
+    #Fix spelling error
     __tablename__ = 'histories'
     id = db.Column(db.Integer, primary_key=True)
     hocphi_id = db.Column(db.Integer , db.Foreignkey('hocphis.id'), nullable=False)
     masv_nop  =  db.Column(db.String(64), db.Foreignkey('users.masv'), nullable=False)
     masv_no = db.Column(db.String(64), db.Foreignkey('hocphis.masv'), nullable=False, index=True)
-    timestamp = db.Column(db.Datetime)
+    timestamp = db.Column(db.Datetime) 
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -86,7 +87,7 @@ class AnonymousUser(AnonymousUserMixin):
     def is_administrator(self):
         return False
 login_manager.anonymous_user = AnonymousUser
-
+#Login Manager init_app ?
 
 @login_manager.user_loader
 def load_user(user_id):
