@@ -75,6 +75,8 @@ class LichSu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     hocphi_id = db.Column(db.Integer , db.ForeignKey('hocphis.id'), nullable=False)
     masv_nop  =  db.Column(db.String(64), db.ForeignKey('users.masv'), nullable=False)
+    # masv_no = db.Column(db.String(64), db.ForeignKey('hocphis.masv'), nullable=False, index=True)
+    # Mã số sinh viên nợ được lưu ở bảng học phí rồi nên không lưu ở đây nữa/ sinh lỗi AmbiguousForeignKeys
     timestamp = db.Column(db.DateTime)
 
 
