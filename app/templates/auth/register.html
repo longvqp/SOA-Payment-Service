@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+My Flask App
+{% endblock %}
+
+{% block page_content %}
+
+
+
+
+
+
+<div class="col-md-3">
+    <h1>&nbsp</h1>
+</div>
+<div class="col-md-6 loginForm">
+    <h1 style="text-align: center;"> Register </h1>
+    {{ wtf.quick_form(form) }}
+
+</div>
+<div class="col-md-3">
+    <h1>&nbsp</h1>
+</div>
+
+
+
+
+
+
+{% endblock %}
