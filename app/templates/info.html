@@ -2,46 +2,73 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
-    My Flask App Payment
+My Flask App Payment
 {% endblock %}
 
 {% block page_content%}
 
 <div class="container-fluid">
-   
+
     <div class="row">
         <div class="col-4">
             <h1>&nbsp</h1>
-           </div>
-       <div class="col-4 loginForm">
-        <h1 style="text-align: center;">Student Info </h1>
-            
+        </div>
+        <div class="col-4 loginForm">
+            <h1 style="text-align: center;">Student Info </h1>
+
             <hr>
             <div class="row">
-                <div class="col-4">
+                <div class="col-md-4">
+                    <h4>Name: </h4>
+                </div>
+                <div class="col-md-8" style="text-align: left;">
+                    <h4>{{ current_user.username }}</h4>
+                </div>
+            </div>
+            <hr>
+
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Student ID: </h4>
+                </div>
+                <div class="col-md-8" style="text-align: left;">
+                    <h4>{{ current_user.masv }}</h4>
+                </div>
+            </div>
+            <hr>
+
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Email: </h4>
+                </div>
+                <div class="col-md-8" style="text-align: left;">
+                    <h4>{{ current_user.email }}</h4>
+                </div>
+            </div>
+            <hr>
+
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
                     <h4>Balance: </h4>
                 </div>
-                <div class="col-8" style="text-align: right;">
-                    <h4>30.000.000 VND</h4>
+                <div class="col-md-8" style="text-align: right;">
+                    <h4>{{ current_user.sodu }} VND</h4>
                 </div>
             </div>
-          
             <hr>
-      
 
-        
-           <div class="row">
-            <div class="col-6">
-                <button class="custom_btn">Top up</button>
+
+
+            <div class="row">
+
             </div>
-            <div class="col-6">
-                <a href="/">Home</a>
-            </div>
-           </div>
-       </div>
-       <div class="col-4">
-        <h1>&nbsp</h1>
-       </div>
+        </div>
+        <div class="col-4">
+            <h1>&nbsp</h1>
+        </div>
 
     </div>
 </div>
