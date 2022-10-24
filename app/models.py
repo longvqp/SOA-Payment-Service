@@ -15,7 +15,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     sodu = db.Column(db.Float, default=0)
     hocphi = db.relationship('HocPhi', backref='users', lazy=True)
-    lichsu = db.relationship('Lichsu', backref='users', lazy=True)  
+    lichsu = db.relationship('LichSu', backref='users', lazy=True)  
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -44,7 +44,7 @@ class HocPhi(db.Model):
     sotien = db.Column(db.Float, nullable=False, default=0)
     otp = db.Column(db.Integer)
     status = db.Column(db.String(10), nullable=False , default='Wait')
-    lichsu = db.relationship('Lichsu', backref='hocphis', lazy=True)
+    lichsu = db.relationship('LichSu', backref='hocphis', lazy=True)
     
     def generate_confirmation_otp(self, expiration=300):
         t =  randrange(100000,999999)
@@ -71,22 +71,20 @@ class HocPhi(db.Model):
 
 
 class LichSu(db.Model):
-    #Fix spelling error
     __tablename__ = 'histories'
     id = db.Column(db.Integer, primary_key=True)
     hocphi_id = db.Column(db.Integer , db.ForeignKey('hocphis.id'), nullable=False)
     masv_nop  =  db.Column(db.String(64), db.ForeignKey('users.masv'), nullable=False)
-    masv_no = db.Column(db.String(64), db.ForeignKey('hocphis.masv'), nullable=False, index=True)
     timestamp = db.Column(db.DateTime)
 
 
-# class AnonymousUser(AnonymousUserMixin):
-#     def can(self, permissions):
-#         return False
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissions):
+        return False
 
-#     def is_administrator(self):
-#         return False
-# login_manager.anonymous_user = AnonymousUser
+    def is_administrator(self):
+        return False
+login_manager.anonymous_user = AnonymousUser
 
 
 @login_manager.user_loader

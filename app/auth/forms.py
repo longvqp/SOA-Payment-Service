@@ -4,7 +4,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 
 
 class LoginForm(FlaskForm):
-    mssv = StringField('Student ID:', validators=[DataRequired(), Length(1,10)])
+    masv = StringField('Student ID:', validators=[DataRequired(), Length(1,10)])
     password = PasswordField('Password:', validators=[DataRequired()])
     remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log In')

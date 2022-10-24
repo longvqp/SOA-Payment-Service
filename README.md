@@ -9,6 +9,7 @@
 - Create UI for register
 
 **Page Function**
+- ~~Login Function~~
 - Register Account
 - Managing Account Ballance
 
