@@ -1,8 +1,12 @@
 from flask import render_template
 from . import main
-from .forms import retrieve_info, purchase_form
+
+from .forms import retrieve_info, purchase_form,UpdateBallanceForm
 from flask_login import login_user, logout_user, login_required, current_user
 from random import randint
+
+from .. import db
+
 
 @main.route('/')
 def index():
@@ -13,8 +17,9 @@ def tuition():
     form = retrieve_info()
     return render_template('tuition.html',form=form)
 
-@main.route('/info')
+@main.route('/info', methods=['GET','POST'])
 def info():
+
     return render_template('info.html')
 
 @main.route('/purchase', methods=['GET', 'POST'])
@@ -33,7 +38,7 @@ def purchase():
         send_email(user.email, 'Confirm Your Purchase',
                    'email/confirm', otp= otp )
         flash('A OTP has been sent to you by email.')
-        return redirect(url_for('authOTP', id = hocphi.id, term = hocphi.term))
+        return redirect(url_for('authOTP', masv = hocphi.masv, term = hocphi.term))
     return render_template('payment.html', form=form)
 
 @main.route('/authOTP/<id>/<term>', methods=['GET', 'POST'])
@@ -41,10 +46,13 @@ def purchase():
 def OTP():
     form = OTPForm()
     if form.validate_on_submit():
-        hocphi = HocPhi.query.filter_by(id=id,term=term).first()
+        hocphi = HocPhi.query.filter_by(masv=masv,term=term).first()
         if hocphi.otp != form.otp.data:
             flash('OTP incorrect. Check your otp, please!!!')
             return redirect(url_for('authOTP'))
+        user = User.query.filter_by(masv=masv).first()
+        sodu = user.sodu
+        user.sodu = sodu - hocphi.sotien
         hocphi.status = 'Done'
         lichsu = LichSu(hocphi_id=hocphi.id, masv_nop=current_user.masv)
         db.session.add(lichsu)
@@ -62,3 +70,13 @@ def resend_OTP():
                    'email/confirm', otp=otp, user=current_user)
     flash('A new OTP email has been sent to you by email.')
     return redirect(url_for('authOTP'))
+
+    # update_ballance = UpdateBallanceForm()
+    # if update_ballance.validate_on_submit():
+    #     print(update_ballance.amount_of_monney.data)
+    #     print(current_user.sodu)
+    #     current_user.sodu = update_ballance.amount_of_monney.data
+    #     # user = User(sodu=update_ballance.amount_of_monney.data)
+    #     db.session.commit()
+    # return render_template('info.html',update_ballance=update_ballance)
+

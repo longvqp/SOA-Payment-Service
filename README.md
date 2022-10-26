@@ -10,6 +10,7 @@
 
 **Page Function**
 - ~~Login Function~~
-- Register Account
+- ~~Register Account~~
+- Update Student Info
 - Managing Account Ballance
 
