@@ -3,7 +3,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from . import db,login_manager
-from random import randrange
+from random import randint
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -41,16 +41,15 @@ class HocPhi(db.Model):
     __tablename__ = 'hocphis'
     id = db.Column(db.Integer, primary_key=True)
     masv = db.Column(db.String(64), db.ForeignKey('users.masv'), nullable=False)
+    term = db.Column(db.String(64),  unique=True, nullable=False)
     sotien = db.Column(db.Float, nullable=False, default=0)
-    otp = db.Column(db.Integer)
+    otp = db.Column(db.String(6),unique=True)
     status = db.Column(db.String(10), nullable=False , default='Wait')
     lichsu = db.relationship('LichSu', backref='hocphis', lazy=True)
     
     def generate_confirmation_otp(self, expiration=300):
-        t =  randrange(100000,999999)
-        self.otp = t
-        s = Serializer(t, expiration)
-        return s.dumps({'user': self.id, 'otp ' : t}).decode('utf-8')
+        s = Serializer(self.otp, expiration)
+        return s.dumps({'otp' : otp}).decode('utf-8')
 
     def confirm(self, otp):
         s = Serializer(t)
@@ -64,7 +63,7 @@ class HocPhi(db.Model):
         return True
 
     def generate_reset_otp(self, expiration=300):
-        t =  randrange(100000,999999)
+        t =  "%06d" % randint(0,999999)
         self.otp = t
         s = Serializer(t, expiration)
         return s.dumps({'reset': self.id , 'otp': t}).decode('utf-8')
