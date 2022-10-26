@@ -2,7 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
-My Flask App Payment
+Payment Service
 {% endblock %}
 
 {% block page_content%}
@@ -55,16 +55,36 @@ My Flask App Payment
                     <h4>Balance: </h4>
                 </div>
                 <div class="col-md-8" style="text-align: right;">
-                    <h4>{{ current_user.sodu }} VND</h4>
+                    <h4>{{ current_user.sodu|currencyFormat  }} VND</h4>
+                    <div class="row">
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Update Balance</button>
+                    </div>
                 </div>
+               
             </div>
             <hr>
 
 
-
-            <div class="row">
-                <!-- #Update Infor Here -->
-            </div>
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Update Account Balance</h4>
+                    </div>
+                    <div class="modal-body">
+                      <p>Some text in the modal.</p>
+                      {{ wtf.quick_form(update_ballance) }}
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+              
+                </div>
+              </div>
+          
         </div>
         <div class="col-4">
             <h1>&nbsp</h1>
