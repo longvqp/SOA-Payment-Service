@@ -6,11 +6,11 @@
 - Create UI for OTP
 - ~~Create Account Info for Balance checking~~
 - ~~Create Navbar~~
-- Create UI for register
+- ~~Create UI for register~~
 
 **Page Function**
 - ~~Login Function~~
 - ~~Register Account~~
 - ~~Update Student Info~~
-- Managing Account Ballance (Two Option: Update Balance or Add more to ballance)
+- ~~Managing Account Ballance (Add more to ballance)~~
 
