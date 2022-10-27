@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template,flash
 from . import main
 
 from .forms import retrieve_info, purchase_form,UpdateBallanceForm
@@ -6,16 +6,27 @@ from flask_login import login_user, logout_user, login_required, current_user
 from random import randint
 
 from .. import db
+from ..models import HocPhi
 
 
 @main.route('/')
 def index():
     return render_template('index.html')
 
-@main.route('/tuition')
+@main.route('/tuition', methods=['GET','POST'])
 def tuition():
     form = retrieve_info()
+    if form.validate_on_submit():
+        hocphi = HocPhi.query.filter_by(masv=form.mssv.data).first()
+        if(hocphi):
+            return render_template('tuition.html',form=form,hocphi=hocphi)
+        else:
+            flash('No student found')
     return render_template('tuition.html',form=form)
+
+@main.route('/payment', methods=['GET','POST'])
+def payment():
+    return render_template('payment.html')
 
 @main.route('/info', methods=['GET','POST'])
 def info():
@@ -27,10 +38,6 @@ def info():
         # user = User(sodu=update_ballance.amount_of_monney.data)
         db.session.commit()
     return render_template('info.html',update_ballance=update_ballance)
-
-@main.route('/payment', methods=['GET','POST'])
-def payment():
-    return render_template('payment.html')
 
 @main.route('/purchase', methods=['GET', 'POST'])
 #@login_required
