@@ -13,5 +13,4 @@ class purchase_form(FlaskForm):
 
 class UpdateBallanceForm(FlaskForm):
      amount_of_monney = IntegerField('Amount: ', validators=[NumberRange(min=0)])
-
      submit = SubmitField()

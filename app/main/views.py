@@ -28,6 +28,10 @@ def info():
         db.session.commit()
     return render_template('info.html',update_ballance=update_ballance)
 
+@main.route('/payment', methods=['GET','POST'])
+def payment():
+    return render_template('payment.html')
+
 @main.route('/purchase', methods=['GET', 'POST'])
 #@login_required
 def purchase():
