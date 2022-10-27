@@ -19,7 +19,7 @@ def info():
     if update_ballance.validate_on_submit():
         print(update_ballance.amount_of_monney.data)
         print(current_user.sodu)
-        current_user.sodu = update_ballance.amount_of_monney.data
+        current_user.sodu = current_user.sodu + update_ballance.amount_of_monney.data
         # user = User(sodu=update_ballance.amount_of_monney.data)
         db.session.commit()
     return render_template('info.html',update_ballance=update_ballance)
