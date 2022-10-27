@@ -11,6 +11,6 @@
 **Page Function**
 - ~~Login Function~~
 - ~~Register Account~~
-- Update Student Info
-- Managing Account Ballance
+- ~~Update Student Info~~
+- Managing Account Ballance (Two Option: Update Balance or Add more to ballance)
 
