@@ -53,10 +53,16 @@ Payment Service
             <hr>
             <div class="row">
                 <div class="col-md-4">
+                    <h4>Current Balance: </h4>
                     <h4>Tuition Fee: </h4>
+                    <hr>
+                    <h4>Remaining Balance: </h4>
                 </div>
                 <div class="col-md-8" style="text-align: right;">
                     <h4>{{ current_user.sodu|currencyFormat  }}</h4>
+                    <h4>{{ current_user.sodu|currencyFormat  }}</h4>
+                    <hr>
+                    <h4>{{current_user.sodu-current_user.sodu}}</h4>
                     <div class="row">
                         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Pay</button>
                     </div>
