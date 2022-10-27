@@ -21,7 +21,7 @@ def create_app(config_name):
     @app.template_filter()
     def currencyFormat(value):
         value = float(value)
-        return "${:,.2f}".format(value)
+        return "{:,.2f} VND".format(value)
 
 
     from .main import main as main_blueprint
