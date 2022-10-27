@@ -68,7 +68,11 @@
            </div>
 
            <div class="row">
-            <input class="btn btn-default" id="submit" name="submit" type="submit" value="Proceed Payment">
+            <form action="{{ url_for('main.payment') }}">
+              <input class="btn btn-default" id="submit" name="submit" type="submit" value="Proceed Payment">
+          </form>
+            
+            
            </div>
            <hr>
        </div>
