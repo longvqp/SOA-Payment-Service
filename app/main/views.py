@@ -33,12 +33,6 @@ def purchase():
             return redirect(url_for(authOTP))
         otp = "%06d" % randint(0,999999)
         hocphi.otp = otp
-    update_ballance = UpdateBallanceForm()
-    if update_ballance.validate_on_submit():
-        print(update_ballance.amount_of_monney.data)
-        print(current_user.sodu)
-        current_user.sodu = current_user.sodu + update_ballance.amount_of_monney.data
-        # user = User(sodu=update_ballance.amount_of_monney.data)
         db.session.commit()
         otp = user.generate_confirmation_otp()
         send_email(user.email, 'Confirm Your Purchase',
