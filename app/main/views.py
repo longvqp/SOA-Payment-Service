@@ -18,8 +18,10 @@ def tuition():
     form = retrieve_info()
     if form.validate_on_submit():
         hocphi = HocPhi.query.filter_by(masv=form.mssv.data).first()
+        sinhvien = User.query.filter_by(masv=form.mssv.data).first()
+
         if(hocphi):
-            return render_template('tuition.html',form=form,hocphi=hocphi)
+            return render_template('tuition.html',form=form,hocphi=hocphi,sinhvien=sinhvien)
         else:
             flash('No student found')
     return render_template('tuition.html',form=form)
