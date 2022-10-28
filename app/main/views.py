@@ -6,7 +6,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from random import randint
 
 from .. import db
-from ..models import HocPhi
+from ..models import HocPhi, User
 
 
 @main.route('/')
@@ -24,9 +24,12 @@ def tuition():
             flash('No student found')
     return render_template('tuition.html',form=form)
 
-@main.route('/payment', methods=['GET','POST'])
-def payment():
-    return render_template('payment.html')
+@main.route('/payment/<id>', methods=['GET','POST'])
+def payment(id):
+    print(id)
+    student_indept = User.query.filter_by(masv=id).first()
+    fee = HocPhi.query.filter_by(masv=id).first()
+    return render_template('payment.html',student_indept=student_indept,fee=fee)
 
 @main.route('/info', methods=['GET','POST'])
 def info():

@@ -39,13 +39,13 @@ Payment Service
                     <h4>Student In Dept: </h4>
                 </div>
                 <div class="col-md-3" style="text-align: left;">
-                    <h4>{{ current_user.username }}</h4>
+                    <h4>{{ student_indept.username }}</h4>
                 </div>
                 <div class="col-md-2" style="text-align:right;">
                     <h4>ID: </h4>
                 </div>
                 <div class="col-md-3" style="text-align: left;">
-                    <h4>{{ current_user.masv }}</h4>
+                    <h4>{{ student_indept.masv }}</h4>
                 </div>
             </div>
             <hr>
@@ -60,9 +60,9 @@ Payment Service
                 </div>
                 <div class="col-md-8" style="text-align: right;">
                     <h4>{{ current_user.sodu|currencyFormat  }}</h4>
-                    <h4>{{ current_user.sodu|currencyFormat  }}</h4>
+                    <h4>{{ fee.sotien|currencyFormat  }}</h4>
                     <hr>
-                    <h4>{{current_user.sodu-current_user.sodu}}</h4>
+                    <h4>{{current_user.sodu-fee.sotien}}</h4>
                     <div class="row">
                         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Pay</button>
                     </div>
