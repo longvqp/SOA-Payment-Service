@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template,flash
 from . import main
 
 from .forms import retrieve_info, purchase_form,UpdateBallanceForm
@@ -6,16 +6,32 @@ from flask_login import login_user, logout_user, login_required, current_user
 from random import randint
 
 from .. import db
+from ..models import HocPhi, User
 
 
 @main.route('/')
 def index():
     return render_template('index.html')
 
-@main.route('/tuition')
+@main.route('/tuition', methods=['GET','POST'])
 def tuition():
     form = retrieve_info()
+    if form.validate_on_submit():
+        hocphi = HocPhi.query.filter_by(masv=form.mssv.data).first()
+        sinhvien = User.query.filter_by(masv=form.mssv.data).first()
+
+        if(hocphi):
+            return render_template('tuition.html',form=form,hocphi=hocphi,sinhvien=sinhvien)
+        else:
+            flash('No student found')
     return render_template('tuition.html',form=form)
+
+@main.route('/payment/<id>', methods=['GET','POST'])
+def payment(id):
+    print(id)
+    student_indept = User.query.filter_by(masv=id).first()
+    fee = HocPhi.query.filter_by(masv=id).first()
+    return render_template('payment.html',student_indept=student_indept,fee=fee)
 
 @main.route('/info', methods=['GET','POST'])
 def info():
@@ -23,7 +39,8 @@ def info():
     if update_ballance.validate_on_submit():
         print(update_ballance.amount_of_monney.data)
         print(current_user.sodu)
-        current_user.sodu = update_ballance.amount_of_monney.data
+
+        current_user.sodu = current_user.sodu + update_ballance.amount_of_monney.data
         # user = User(sodu=update_ballance.amount_of_monney.data)
         db.session.commit()
     return render_template('info.html',update_ballance=update_ballance)
@@ -81,4 +98,8 @@ def resend_OTP():
     return redirect(url_for('authOTP', id=hocphi.id))
 
 
+<<<<<<< HEAD
+=======
+   
+>>>>>>> 21135829bbf2833332f03ae05d081b4eef3e0d55
 

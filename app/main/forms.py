@@ -5,7 +5,7 @@ from wtforms import StringField, IntegerField, SubmitField
 
 class retrieve_info(FlaskForm):
      mssv = StringField('Student ID:', validators=[DataRequired(), Length(1,8)])
-     submit = SubmitField()
+     check = SubmitField()
 
 class purchase_form(FlaskForm):
      mssv = StringField('Student ID:', validators=[DataRequired(), Length(1,8)])
@@ -13,5 +13,4 @@ class purchase_form(FlaskForm):
 
 class UpdateBallanceForm(FlaskForm):
      amount_of_monney = IntegerField('Amount: ', validators=[NumberRange(min=0)])
-
      submit = SubmitField()

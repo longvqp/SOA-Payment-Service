@@ -55,7 +55,7 @@ Payment Service
                     <h4>Balance: </h4>
                 </div>
                 <div class="col-md-8" style="text-align: right;">
-                    <h4>{{ current_user.sodu|currencyFormat  }} VND</h4>
+                    <h4>{{ current_user.sodu|currencyFormat  }}</h4>
                     <div class="row">
                         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Update Balance</button>
                     </div>
@@ -74,7 +74,6 @@ Payment Service
                       <h4 class="modal-title">Update Account Balance</h4>
                     </div>
                     <div class="modal-body">
-                      <p>Some text in the modal.</p>
                       {{ wtf.quick_form(update_ballance) }}
                     </div>
                     <div class="modal-footer">

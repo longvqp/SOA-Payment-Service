@@ -2,82 +2,73 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
-    My Flask App Payment
+My Flask App Payment
 {% endblock %}
 
 {% block page_content%}
 
 <div class="container-fluid">
-   
-    <div class="row">
-        <div class="col-4">
-            <h1>&nbsp</h1>
-           </div>
-       <div class="col-4 loginForm">
-        <h1 style="text-align: center;">Tuition Info </h1>
-            {{ wtf.quick_form(form) }}
-            <hr>
-            <div class="row">
-                <div class="col-8">
-                    <h4>Tuition Fee: </h4>
-                </div>
-                <div class="col-4">
-                    <h4>30.000.000VND</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-8">
-                    <h5>Semester</h5>
-                </div>
-                <div class="col-4">
-                    <h5>2</h5>
-                </div>
-            </div>
-            <hr>
-           <div class="row">
-            <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Course name</th>
-                    <th scope="col">Credit</th>
-                    <th scope="col">Fee</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Course number one</td>
-                    <td>3</td>
-                    <td>2.000.000 VND</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Course number two</td>
-                    <td>2</td>
-                    <td>3.000.000 VND</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Course number three</td>
-                    <td>3</td>
-                    <td>9.000.000 VND</td>
-                  </tr>
-                </tbody>
-              </table>
-           </div>
 
-           <div class="row">
-            <label for="submit">{{url_for('main.purchase')}}</label>
-            <input class="btn btn-default" id="submit" name="submit" type="submit" value="Proceed Payment">
-           </div>
-           <hr>
-       </div>
-       <div class="col-4">
-        <h1>&nbsp</h1>
-       </div>
-
+  <div class="row">
+    <div class="col-4">
+      <h1>&nbsp</h1>
     </div>
+    <div class="col-4 loginForm">
+      <h1 style="text-align: center;">Tuition Info </h1>
+      <hr>
+      {{ wtf.quick_form(form) }}
+      <hr>
+      {%if hocphi%}
+      <div class="row">
+        <div class="col-md-8">
+          <h4>Student Name: </h4>
+        </div>
+        <div class="col-md-4">
+          <h4>{{sinhvien.username}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <h4>Tuition Fee: </h4>
+        </div>
+        <div class="col-md-4">
+          {% if hocphi.sotien==0 %}
+          <h4>Student have already pay</h4>
+          {% else %}
+          <h4>{{hocphi.sotien|currencyFormat}}</h4>
+          {% endif %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <h5>Semester</h5>
+        </div>
+        <div class="col-md-4">
+          <h5>{{hocphi.term}}</h5>
+          <hr>
+          <div class="row">
+            {% if hocphi.sotien==0 %}
+            <a> <button disabled type="button" class="btn btn-info btn-lg">Proceed to
+                Payment</button></a>
+                {% else %}
+                <a href="/payment/{{hocphi.masv}}"> <button type="button" class="btn btn-info btn-lg">Proceed to
+                  Payment</button></a>
+                  {% endif %}
+          </div>
+        </div>
+      </div>
+
+
+
+      {% endif %}
+
+      <hr>
+    </div>
+    <div class="col-4">
+      <h1>&nbsp</h1>
+    </div>
+
+  </div>
 </div>
 
 
