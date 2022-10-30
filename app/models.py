@@ -79,7 +79,7 @@ class HocPhi(db.Model):
         db.session.add(lichsu)
         return True
 
-    def generate_reset_otp(self, expiration=300):
+    def reset_otp(self, expiration=300):
         otp = ''
         listotp = self.listOTP()
         while True: #kiểm tra otp có bị trùng hay không
@@ -89,7 +89,7 @@ class HocPhi(db.Model):
         self.otp = otp
         db.session.commit()
         s = Serializer(self.otp, expiration) #thay self otp bằng mã secret key trong env
-        return s.dumps({'hocphi': self.id, 'otp' : self.otp}).decode('utf-8'), self.otp
+        return  s.dumps({'hocphi': self.id, 'otp' : self.otp}).decode('utf-8'), self.otp
     
     @property
     def listOTP():
@@ -118,5 +118,5 @@ login_manager.anonymous_user = AnonymousUser
 
 
 @login_manager.user_loader
-def load_user(user_masv):
-    return User.query.get(user_masv)
+def load_user(user_id):
+    return User.query.get(int(user_id))

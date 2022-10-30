@@ -1,0 +1,11 @@
+Chào {{ user.username }},
+
+Đây là mã OTP của bạn: {{ otp }}
+Vui lòng không chia sẻ cho người khác!
+OTP có hiệu lực trong vòng 5 phút.
+Nếu quá 5 phút, bạn quay về trang thanh toán để tiến hành thanh toán lại.
+Xin cảm ơn,
+
+The Flasky Team
+
+Note: replies to this email address are not monitored.

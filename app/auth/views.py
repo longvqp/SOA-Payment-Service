@@ -17,7 +17,7 @@ def login():
 
 
         if user is not None and user.verify_password(form.password.data):
-            login_user(user.masv, form.remember_me.data)
+            login_user(user)
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
                 next = url_for('main.index')

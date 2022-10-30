@@ -1,10 +1,10 @@
 from flask import render_template,flash
 from . import main
 
-from .forms import retrieve_info, purchase_form,UpdateBallanceForm
+from .forms import retrieve_info, purchase_form,UpdateBallanceForm, hocphi_form
 from flask_login import login_user, logout_user, login_required, current_user
 from random import randint
-
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from .. import db
 from ..models import HocPhi, User
 
@@ -47,25 +47,31 @@ def info():
 
 
 @main.route('/purchase', methods=['GET', 'POST'])
-#@login_required
+@login_required
 def purchase():
-    form = purchase_form() #Form thanh toán
-    form1 = hocphi_form() #form để lấy masv của người được nộp
-    if form.validate_on_submit():
+    # form = purchase_form() #Form thanh toán
+    form1 = hocphi_form()
+    hocphi = None #form để lấy masv của người được nộp
+    if form1.validate_on_submit():
         hocphi = HocPhi.query.filter_by(masv=form1.masv.data,semester=form1.semester.data).first()
         if hocphi.otp:
             flash('OTP is sent. Check your email, please!!!')
             return redirect(url_for('authOTP', id=hocphi.id))
+        # token, otp = hocphi.generate_confirmation_otp()
+        # send_email(current_user.email, 'Confirm Your Purchase',
+        #            'email/confirm', otp= otp , token=token , user=current_user)
+        # flash('A OTP has been sent to you by email.')
+        # return redirect(url_for('authOTP',id = hocphi.id))
         token, otp = hocphi.generate_confirmation_otp()
-        send_email(current_user.email, 'Confirm Your Purchase',
-                   'email/confirm', otp= otp )
+        end_email(current_user.email, 'Confirm Your Purchase',
+                   'email/authOTP', otp= otp , user=current_user)
         flash('A OTP has been sent to you by email.')
-        return redirect(url_for('authOTP',id = hocphi.id))
-    return render_template('payment.html', form=form)
+        return redirect(url_for('authOTP', otp = otp, token=token)) #ajax 
+    return render_template('payment.html', form=form1, hocphi= hocphi)
 
-@main.route('/authOTP/<token>')
+@main.route('/authOTP', methods=['GET', 'POST'])
 @login_required
-def authOTP(token):
+def authOTP():
     form = OTPForm()
     if form.validate_on_submit():
         hocphi = HocPhi.query.get(id)
@@ -73,7 +79,7 @@ def authOTP(token):
         #     flash('OTP incorrect. Check your otp, please!!!')
         #     return redirect(url_for('authOTP'))
         user = User.query.filter_by(masv=hocphi.masv).first() #User được nộp tiền
-        if hocphi.confirm(token, current_user.id):
+        if hocphi.confirm(form.otp.data, current_user.id):
             db.session.commit()
             flash('Purchase successfully!!!')
             send_email(current_user.email, 'Purchase successfully.', #gửi email thành công cho người nộp
@@ -87,19 +93,13 @@ def authOTP(token):
 
 
 
-@main.route('/authOTP')
+@main.route('/authOTP/reset')
 @login_required
 def resend_OTP():
     hocphi = HocPhi.query.get(id)
-    token, otp = hocphi.generate_reset_otp()
+    token, otp = hocphi.reset_otp()
     send_email(current_user.email, 'Confirm Your Purchase',
-                   'email/confirm', otp=otp, token= token)
+                   'email/confirm', otp=otp, user=current_user)
     flash('A new OTP email has been sent to you by email.')
     return redirect(url_for('authOTP', id=hocphi.id))
-
-
-<<<<<<< HEAD
-=======
-   
->>>>>>> 21135829bbf2833332f03ae05d081b4eef3e0d55
 
