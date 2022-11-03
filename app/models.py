@@ -5,6 +5,7 @@ from flask_login import UserMixin, AnonymousUserMixin
 from . import db,login_manager
 from random import randint
 
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -42,33 +43,27 @@ class HocPhi(db.Model):
     __tablename__ = 'hocphis'
     id = db.Column(db.Integer, primary_key=True)
     masv = db.Column(db.String(64), db.ForeignKey('users.masv'), nullable=False)
-    semester = db.Column(db.String(64), unique=True, nullable=False)
     sotien = db.Column(db.Float, nullable=False, default=0)
     otp = db.Column(db.String(6),unique=True, index=True)
     status = db.Column(db.String(10), nullable=False , default='Wait')
     lichsu = db.relationship('LichSu', backref='hocphis', lazy=True)
     
     def generate_confirmation_otp(self, expiration=300):
-        s = Serializer(self.otp, expiration) #thay self otp bằng mã secret key trong env
+        s = ''
         otp = ''
         listotp = self.listOTP()
         while True:
             otp = "%06d" % randint(0,999999)
-            if otp not in listotp:
+            s = Serializer(otp, expiration)
+            if s not in listotp:
                 break
-        self.otp = otp
+        self.otp = s
         db.session.commit()
-        return s.dumps({'hocphi': self.id, 'otp' : self.otp}).decode('utf-8'), self.otp
+        return otp
 
-    def confirm(self, token, user_id):
-        s = Serializer(self.otp) #thay self otp bằng mã secret key trong env
-        try:
-            data = s.loads(token.encode('utf-8'))
-        except:
-            return False
-        if data.get('hocphi') != self.id :
-            return False
-        if data.get('otp') != self.otp | data.get('otp') is None:
+    def confirm(self, otp, user_id):
+        s = Serializer(otp) 
+        if s != self.otp:
             return False
         self.otp = None
         self.status = 'Done'
@@ -80,23 +75,22 @@ class HocPhi(db.Model):
         return True
 
     def reset_otp(self, expiration=300):
+        s =''
         otp = ''
         listotp = self.listOTP()
         while True: #kiểm tra otp có bị trùng hay không
             otp = "%06d" % randint(0,999999)
-            if otp not in listotp:
+            s = Serializer(otp, expiration)
+            if s not in listotp:
                 break
-        self.otp = otp
+        self.otp = s
         db.session.commit()
-        s = Serializer(self.otp, expiration) #thay self otp bằng mã secret key trong env
-        return  s.dumps({'hocphi': self.id, 'otp' : self.otp}).decode('utf-8'), self.otp
-    
+        return otp
+
     @property
     def listOTP():
         hocphi_otp = db.session.query(HocPhi.otp)
         return hocphi_otp.all()
-
-
 
 class LichSu(db.Model):
     __tablename__ = 'histories'
