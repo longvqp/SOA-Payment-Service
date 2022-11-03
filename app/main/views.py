@@ -5,7 +5,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from random import randint
 from .. import db
 from ..models import HocPhi, User
-
+import httpx
 
 @main.route('/')
 def index():
@@ -27,7 +27,7 @@ def tuition():
 def fee(mssv):
     hocphi = HocPhi.query.filter_by(masv=str(mssv), status='Wait').first()
     user = User.query.filter_by(masv=str(mssv)).first()
-    return user.username, hocphi.sotien
+    return jsonify({ 'name' : user.username, 'tienno' : hocphi.sotien})
 
 @main.route('/payment/<id>', methods=['GET','POST'])
 def payment(id):
@@ -55,6 +55,7 @@ def purchase():
     # form = purchase_form() #Form thanh toán
     form1 = hocphi_form()
     hocphi = None #form để lấy masv của người được nộp
+    
     if form1.validate_on_submit():
         hocphi = HocPhi.query.filter_by(masv=form1.masv.data).first()
         if hocphi.otp:
