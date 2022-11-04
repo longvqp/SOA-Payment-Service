@@ -1,5 +1,8 @@
+
 $(document).ready(function() {
     $('#masv_no').focusout(function() {
+        console.log('Ajax is working');
+        console.log($('#masv-no').val());
         $.ajax({
             type : 'GET',
             url : '/tuition/'+$('#masv-no').val()

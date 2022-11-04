@@ -13,18 +13,40 @@ My Flask App Payment
     <div class="col-4">
       <h1>&nbsp</h1>
     </div>
-    <div class="col-4 loginForm">
+    <div class="col-4">
       <h1 style="text-align: center;">Tuition Info </h1>
       <hr>
-      {{ wtf.quick_form(form) }}
+      <div class="row">
+        <div class="col-md-2">
+          <h4>Student Paying: </h4>
+        </div>
+        <div class="col-md-3" style="text-align: left;">
+          <h4>{{ current_user.username }}</h4>
+        </div>
+        <div class="col-md-2" style="text-align:right;">
+          <h4>ID: </h4>
+        </div>
+        <div class="col-md-3" style="text-align: left;">
+          <h4>{{ current_user.masv }}</h4>
+        </div>
+      </div>
+
       <hr>
-      {%if hocphi%}
+      <form>
+        <div class="form-group">
+          <label for="masv_no">Email address</label>
+          <input type="email" class="form-control" id="masv_no" placeholder="Enter student id">
+
+        </div>
+      </form>
+      <hr>
+
       <div class="row">
         <div class="col-md-8">
           <h4>Student Name: </h4>
         </div>
         <div class="col-md-4">
-          <h4>{{sinhvien.username}}</h4>
+          <h4>Ten Sinh Vien No</h4>
         </div>
       </div>
       <div class="row">
@@ -32,44 +54,39 @@ My Flask App Payment
           <h4>Tuition Fee: </h4>
         </div>
         <div class="col-md-4">
-          {% if hocphi.sotien==0 %}
-          <h4>Student have already pay</h4>
-          {% else %}
-          <h4>{{hocphi.sotien|currencyFormat}}</h4>
-          {% endif %}
+
+          <h4>So tien sinh vien no</h4>
+
         </div>
       </div>
       <div class="row">
-        <div class="col-md-8">
-          <h5>Semester</h5>
-        </div>
+
         <div class="col-md-4">
-          <h5>{{hocphi.term}}</h5>
-          <hr>
-          <div class="row">
-            {% if hocphi.sotien==0 %}
-            <a> <button disabled type="button" class="btn btn-info btn-lg">Proceed to
-                Payment</button></a>
-                {% else %}
-                <a href="/payment/{{hocphi.masv}}"> <button type="button" class="btn btn-info btn-lg">Proceed to
-                  Payment</button></a>
-                  {% endif %}
-          </div>
+
+
+
+
+
+          <a href="#"> <button type="button" class="btn btn-info btn-lg">Proceed to
+              Payment</button></a>
+
         </div>
       </div>
-
-
-
-      {% endif %}
-
-      <hr>
     </div>
-    <div class="col-4">
-      <h1>&nbsp</h1>
-    </div>
+
+    <hr>
+
+
+
 
   </div>
-</div>
+  <div class="col-4">
+    <h1>&nbsp</h1>
+  </div>
 
+</div>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='ajax.js') }}"></script>
 
 {% endblock %}

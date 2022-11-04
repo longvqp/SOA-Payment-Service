@@ -25,6 +25,8 @@ def tuition():
 
 @main.route('/tuitions/<mssv>')
 def fee(mssv):
+    print(mssv)
+    print('Ajax working')
     hocphi = HocPhi.query.filter_by(masv=str(mssv), status='Wait').first()
     user = User.query.filter_by(masv=str(mssv)).first()
     return jsonify({ 'name' : user.username, 'tienno' : hocphi.sotien})
