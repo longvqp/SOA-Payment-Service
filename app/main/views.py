@@ -1,11 +1,11 @@
-from flask import render_template,flash
+from flask import render_template,flash,jsonify
 from . import main
 from .forms import retrieve_info, purchase_form,UpdateBallanceForm, hocphi_form
 from flask_login import login_user, logout_user, login_required, current_user
 from random import randint
 from .. import db
 from ..models import HocPhi, User
-import httpx
+
 
 @main.route('/')
 def index():
@@ -23,13 +23,18 @@ def tuition():
             flash('No student found')
     return render_template('tuition.html',form=form)
 
-@main.route('/tuitions/<mssv>')
+@main.route('/tuition/<mssv>')
+@login_required
 def fee(mssv):
-    print(mssv)
-    print('Ajax working')
     hocphi = HocPhi.query.filter_by(masv=str(mssv), status='Wait').first()
     user = User.query.filter_by(masv=str(mssv)).first()
-    return jsonify({ 'name' : user.username, 'tienno' : hocphi.sotien})
+    if hocphi is None:
+        sotien = "None"
+        idd = "None"
+    else: 
+        sotien =hocphi.sotien
+        idd = hocphi.id
+    return jsonify({ 'name' : user.username, 'hocphi' : sotien , 'id' : idd})
 
 @main.route('/payment/<id>', methods=['GET','POST'])
 def payment(id):

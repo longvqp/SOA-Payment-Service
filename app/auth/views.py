@@ -12,8 +12,8 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(masv=form.masv.data.lower()).first()
         
-        print(form.masv.data)
-        print(user)
+        # print(form.masv.data)
+        # print(user)
 
 
         if user is not None and user.verify_password(form.password.data):

@@ -1,21 +1,22 @@
 
 $(document).ready(function() {
     $('#masv_no').focusout(function() {
-        console.log('Ajax is working');
-        console.log($('#masv-no').val());
+
         $.ajax({
             type : 'GET',
-            url : '/tuition/'+$('#masv-no').val()
+            url : '/tuition/'+$(this).val()
         })
         .done(function(data) {
             if (data.name == null) {
                 alert('Không tìm thấy sinh viên')
             }
-            if (data.tienno == null) {
+            $('.nameSvNo').text(data.name)
+            if (data.hocphi == 'None') {
                 alert('Sinh viên đã thanh toán đầy đủ học phí')
-            }
-            $('#name').val(data.name);
-            $('#tienno').val(data.tienno)
+                $('.tienno').text(0)
+            }else{
+                $('.tienno').text(data.hocphi.tienno)
+            }      
         })
     })
 });

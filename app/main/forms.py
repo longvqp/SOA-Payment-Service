@@ -19,8 +19,6 @@ class OTPForm(FlaskForm):
      otp = IntegerField('OTP: ', validators=[DataRequired(), Length(6)])
      submit = SubmitField()
 
-
-
 class hocphi_form(FlaskForm):
      masv = StringField('Student ID:', validators=[DataRequired(), Length(1,8)])
      semester = StringField('Học Kỳ:', validators=[DataRequired()])
