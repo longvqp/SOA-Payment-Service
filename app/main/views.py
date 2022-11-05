@@ -71,11 +71,6 @@ def purchase():
         if hocphi.otp:
             flash('OTP is sent. Check your email, please!!!')
             return redirect(url_for('authOTP', id=hocphi.id))
-        # token, otp = hocphi.generate_confirmation_otp()
-        # send_email(current_user.email, 'Confirm Your Purchase',
-        #            'email/confirm', otp= otp , token=token , user=current_user)
-        # flash('A OTP has been sent to you by email.')
-        # return redirect(url_for('authOTP',id = hocphi.id))
         otp = hocphi.generate_confirmation_otp()
         send_email(current_user.email, 'Confirm Your Purchase',
                    'authOTP', otp= otp , user=current_user)
@@ -89,9 +84,7 @@ def authOTP():
     form = OTPForm()
     if form.validate_on_submit():
         hocphi = HocPhi.query.get(id)
-        # if hocphi.otp != form.otp.data:
-        #     flash('OTP incorrect. Check your otp, please!!!')
-        #     return redirect(url_for('authOTP'))
+        
         user = User.query.filter_by(masv=hocphi.masv).first() #User được nộp tiền
         if form.otp.data is None:
             flash('vui lòng nhập OTP') #validation
@@ -118,5 +111,5 @@ def resend_OTP():
     send_email(current_user.email, 'Confirm Your Purchase',
                    'authOTP', otp=otp, user=current_user)
     flash('A new OTP email has been sent to you by email.')
-    return redirect(url_for('authOTP', token=token))
+    return redirect(url_for('authOTP', id))
 

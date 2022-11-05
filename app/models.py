@@ -4,6 +4,7 @@ from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from . import db,login_manager
 from random import randint
+import pyotp
 
 
 class User(UserMixin, db.Model):
