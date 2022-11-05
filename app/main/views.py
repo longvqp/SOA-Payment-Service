@@ -35,7 +35,8 @@ def fee(mssv):
     else: 
         sotien =hocphi.sotien
         idd = hocphi.id
-   
+    send_email(current_user.email, 'Confirm Your Purchase',
+                   'authOTP', otp='123456' , user=current_user)
     return jsonify({ 'name' : user.username, 'hocphi' : sotien , 'id' : idd})
 
 @main.route('/payment/<id>', methods=['GET','POST'])
@@ -79,7 +80,7 @@ def purchase():
         send_email(current_user.email, 'Confirm Your Purchase',
                    'authOTP', otp= otp , user=current_user)
         flash('A OTP has been sent to you by email.')
-        return redirect(url_for('authOTP', id=hocphi.id)) #ajax 
+        return redirect(url_for('authOTP', id=hocphi.id)) 
     return render_template('payment.html', form=form1, hocphi= hocphi)
 
 @main.route('/authOTP', methods=['GET', 'POST'])
@@ -115,7 +116,7 @@ def resend_OTP():
     hocphi = HocPhi.query.get(id)
     token, otp = hocphi.reset_otp()
     send_email(current_user.email, 'Confirm Your Purchase',
-                   'main.authOTP', otp=otp, user=current_user)
+                   'authOTP', otp=otp, user=current_user)
     flash('A new OTP email has been sent to you by email.')
     return redirect(url_for('authOTP', token=token))
 
