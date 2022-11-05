@@ -63,11 +63,17 @@ My Flask App Payment
 
 
 
-
-
-          <a href="#"> <button type="button" class="btn btn-info btn-lg">Proceed to
-              Payment</button></a>
-
+          <form method="POST" action="/">
+        
+          <!-- <button type="submit" class="btn btn-info btn-lg">Proceed to
+              Payment</button> -->
+              <div class="form-group col-md-6">
+                {{ info_form.csrf_token() }}
+            </div>
+              <div class="form-group">
+                {{ info_form.submit(class="btn btn-primary")}}
+            </div>
+            </form>
         </div>
       </div>
     </div>

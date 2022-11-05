@@ -1,6 +1,6 @@
 from flask import render_template,flash,jsonify
 from . import main
-from .forms import retrieve_info, purchase_form,UpdateBallanceForm, hocphi_form
+from .forms import submitForm, purchase_form,UpdateBallanceForm, hocphi_form
 from flask_login import login_user, logout_user, login_required, current_user
 from random import randint
 from .. import db
@@ -14,15 +14,25 @@ def index():
 
 @main.route('/tuition', methods=['GET','POST'])
 def tuition():
-    form = retrieve_info()
-    if form.validate_on_submit():
-        hocphi = HocPhi.query.filter_by(masv=form.mssv.data).first()
-        sinhvien = User.query.filter_by(masv=form.mssv.data).first()
-        if(hocphi):
-            return render_template('tuition.html',form=form,hocphi=hocphi,sinhvien=sinhvien)
-        else:
-            flash('No student found')
-    return render_template('tuition.html',form=form)
+    info_form = submitForm()
+    info_form.masv_pay = current_user.masv
+    info_form.emaisv_pay = current_user.email
+    info_form.masv_dept = None
+    info_form.emaisv_dept = None
+    info_form.sodu = current_user.sodu
+    info_form.sotien = None
+    if info_form.validate_on_submit():
+        print('sdfsdfsdfsdfsdfsdf')
+        return redirect(url_for('/payment')) 
+    return render_template('tuition.html', info_form=info_form)
+
+@main.route('/payment/<id>', methods=['GET','POST'])
+def payment(id):
+    print(id)
+    student_indept = User.query.filter_by(masv=id).first()
+    fee = HocPhi.query.filter_by(masv=id).first()
+    return render_template('payment.html',student_indept=student_indept,fee=fee)
+
 
 @main.route('/tuition/<mssv>')
 @login_required
@@ -38,12 +48,6 @@ def fee(mssv):
    
     return jsonify({ 'name' : user.username, 'hocphi' : sotien , 'id' : idd})
 
-@main.route('/payment/<id>', methods=['GET','POST'])
-def payment(id):
-    print(id)
-    student_indept = User.query.filter_by(masv=id).first()
-    fee = HocPhi.query.filter_by(masv=id).first()
-    return render_template('payment.html',student_indept=student_indept,fee=fee)
 
 @main.route('/info', methods=['GET','POST'])
 def info():

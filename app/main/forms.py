@@ -3,9 +3,14 @@ from wtforms.validators import DataRequired, Length, Email, Regexp, NumberRange
 from wtforms import StringField, IntegerField, SubmitField
 
 
-class retrieve_info(FlaskForm):
-     mssv = StringField('Student ID:', validators=[DataRequired(), Length(1,8)])
-     check = SubmitField()
+class submitForm(FlaskForm):
+     masv_pay = StringField('Student ID:', validators=[DataRequired(), Length(1,8)])
+     emaisv_pay = StringField('Email: ', validators=[DataRequired()])
+     masv_dept = StringField('Student ID:', validators=[DataRequired(), Length(1,8)])
+     emaisv_dept = StringField('Email: ', validators=[DataRequired()])
+     sodu = IntegerField('Fee: ', validators=[NumberRange(min=0)])
+     sotien = IntegerField('Fee: ', validators=[NumberRange(min=0)])
+     submit = SubmitField(label=('Pay'))
 
 class purchase_form(FlaskForm):
      mssv = StringField('Student ID:', validators=[DataRequired(), Length(1,8)])
