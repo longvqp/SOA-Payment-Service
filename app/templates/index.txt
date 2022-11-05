@@ -1,0 +1,7 @@
+Chào {{ user.username }},
+
+Bạn đã thanh toán thành công học phí.
+
+The Flasky Team
+
+Note: replies to this email address are not monitored.
