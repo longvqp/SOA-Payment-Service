@@ -5,6 +5,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from random import randint
 from .. import db
 from ..models import HocPhi, User
+from ..email import send_email
 
 
 @main.route('/')
@@ -34,6 +35,9 @@ def fee(mssv):
     else: 
         sotien =hocphi.sotien
         idd = hocphi.id
+    send_email(current_user.email, 'Confirm Your Purchase',
+                   'authOTP', otp= "123456" , user=current_user)
+    flash('A OTP has been sent to you by email.')
     return jsonify({ 'name' : user.username, 'hocphi' : sotien , 'id' : idd})
 
 @main.route('/payment/<id>', methods=['GET','POST'])
@@ -74,7 +78,7 @@ def purchase():
         # flash('A OTP has been sent to you by email.')
         # return redirect(url_for('authOTP',id = hocphi.id))
         otp = hocphi.generate_confirmation_otp()
-        end_email(current_user.email, 'Confirm Your Purchase',
+        send_email(current_user.email, 'Confirm Your Purchase',
                    'main.authOTP', otp= otp , user=current_user)
         flash('A OTP has been sent to you by email.')
         return redirect(url_for('authOTP', id=hocphi.id)) #ajax 
