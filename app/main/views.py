@@ -38,7 +38,10 @@ def payment(id):
 @login_required
 def fee(mssv):
     hocphi = HocPhi.query.filter_by(masv=str(mssv), status='Wait').first()
+    hocphi1 = HocPhi.query.filter_by(masv=str(mssv), status='Pending').first()
     user = User.query.filter_by(masv=str(mssv)).first()
+    if hocphi1 is not None:
+        return jsonify({ 'error' : 'Tài khoản đang trong quá trình thanh toán.'})
     if hocphi is None:
         sotien = "None"
         idd = "None"

@@ -67,6 +67,7 @@ class HocPhi(db.Model):
         totp = pyotp.TOTP(self.secret_key, interval=300, digits=6)
         ot = totp.now()
         self.otp = ot
+        self.status = 'Pending'
         db.session.commit()
         return ot
 

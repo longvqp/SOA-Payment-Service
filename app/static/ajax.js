@@ -7,21 +7,28 @@ $(document).ready(function() {
             url : '/tuition/'+$(this).val()
         })
         .done(function(data) {
-
-            if (data.name == null) {
-                alert('Không tìm thấy sinh viên')
+            if (data.error){
+                alert(data.error)
             }
-            $('#namesv_dept').val(data.name)
-            $('#namesv_dept').prop('disabled', true);
-            if (data.hocphi == 'None') {
-                alert('Sinh viên đã thanh toán đầy đủ học phí')
-                $('.sotienno').val("0")
+            else{
+                if (data.name == null) {
+                    alert('Không tìm thấy sinh viên')
+                }else{
+                    $('#namesv_dept').val(data.name)
+                    $('#namesv_dept').prop('disabled', true);
+                }
+                if (data.hocphi == 'None') {
+                    alert('Sinh viên đã thanh toán đầy đủ học phí')
+                    $('.sotienno').val("0")
+                }else{
+                    $('#sotienno').val(data.hocphi)
+                    $('#sotienno').prop('disabled', true);
+                    $('#sotien').val(data.hocphi)
+                    $('#sotien').prop('disabled', true);
+                    $('#hidden').val(data.id)
+                }
             }
-            $('#sotienno').val(data.hocphi)
-            $('#sotienno').prop('disabled', true);
-            $('#sotien').val(data.hocphi)
-            $('#sotien').prop('disabled', true);
-            $('#hidden').val(data.id)
+           
         })
     })
 });
