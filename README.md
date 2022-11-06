@@ -1,19 +1,23 @@
-# SOA-Payment-Service
-**To Do List:**
-- OTP Mailing
-
-**Page Function**
-- Payment Service With OTP
 
 # Project Helper.
 **Run project:** 
+Chạy các câu lệnh trong cmd thư mục chứa code
 ```
 export FLASK_APP=flasky.py
 flask run
 ```
-**How to use:**
-- Use Navigation bar to browse around the project
-- Login with the provided Student ID or create new account with Register.
-- At Tuition page, input a valid student ID to show if that student have any fee need to pay.
-- To pay the tuition fee of the student in the previous step, press proceed to payment.
-- Payment page show who is the payer and who is the student in dept, press the Pay button to recieve an OTP code through your email and use it to finish the payment proceed
+**Sử dụng hệ thống:**
+- Sau khi khởi chạy flask run, hệ thống sẽ chạy trên localhost.
+- Có thể dùng chức năng đăng ký Register trên thanh navbar để thêm sinh viên mới với mục đích kiểm tra hệ thống
+- Dùng chức năng đăng nhập Login trên thanh navbar để đăng nhập vào sử dụng hệ thống
+- Sau khi đăng nhập thành công hệ thống sẽ dẫn đến trang thanh toán học phí
+- Nhập mã số sinh viên với học phí cần thanh toán vào mục Student ID Indept
+- Hệ thống sẽ hiển thị thông tin của sinh viên đang nợ học phí.
+- Click chọn agree all term để xác nhận điều khoản hệ thống (mô phỏng)
+- Click Pay để tiến hành thanh toán.
+- Hệ thống gửi OTP về qua mail của sinh viên thanh toán, mã OTP có thời hạn 5 phút
+- Sau khi nhập vào chính xác mã OTP hệ thống sẽ thông báo thanh toán thành công qua email cho cả người nhận và người gửi.
+
+**Nạp tiền vào Tài Khoản: (Mô phỏng)**
+- Sau khi đăng nhập thành công sinh viên có thể vào trang Information để kiểm tra thông tin và nạp tiền vào tài khoản
+- Click vào mục Update Balance, một form sẽ hiện ra và sinh viên nhập số tiền cần nạp vào tài khoản nhằm mục đích thanh toán học phí.
