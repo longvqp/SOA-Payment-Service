@@ -32,6 +32,7 @@ def register():
         user = User(masv=form.masv.data,
                     email=form.email.data.lower(),
                     name=form.name.data,
+                    sdt=form.sdt.data,
                     password=form.password.data)
         db.session.add(user)
         db.session.commit()
