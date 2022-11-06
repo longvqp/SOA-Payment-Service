@@ -111,10 +111,11 @@ def authOTP():
 @main.route('/authOTP/reset')
 @login_required
 def resend_OTP():
-    hocphi = HocPhi.query.get(id)
+    idd  = int(request.args['id'])
+    hocphi = HocPhi.query.get(idd)
     token, otp = hocphi.reset_otp()
     send_email(current_user.email, 'Confirm Your Purchase',
                    'authOTP', otp=otp, user=current_user)
     flash('A new OTP email has been sent to you by email.')
-    return redirect(url_for('authOTP', id))
+    return redirect(url_for('authOTP', idd=hocphi.id))
 
