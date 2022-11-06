@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Payment Service
+{% endblock %}
+
+{% block page_content%}
+
+<div class="container-fluid">
+
+    <!-- <h1>PAYMENT</h1>
+    <div class="row">
+        {{  wtf.quick_form(form) }}
+    </div> -->
+    <div class="form-wrapper">
+        <h2 class="title">PAYMENT</h2>
+  
+        <form method="POST" action="{{ url_for('main.purchase') }}">
+            {{form.csrf_token}}
+            <fieldset class="form-field">
+                {{ form.masv_pay.label }}
+                {{ form.masv_pay(value = current_user.masv, disabled="disabled") }}
+                
+            </fieldset>
+            <fieldset class="form-field">
+                {{ form.phonesv_pay.label }}
+                {{ form.phonesv_pay(value = current_user.sdt, disabled="disabled") }}
+            </fieldset>
+            <fieldset class="form-field">
+                {{ form.emailsv_pay.label }}
+                {{ form.emailsv_pay(value = current_user.email, disabled="disabled") }}
+            </fieldset>
+  
+            <fieldset class="form-field">
+                {{ form.masv_dept.label }}
+                {{ form.masv_dept }}
+            </fieldset>
+            <fieldset class="form-field">
+                {{ form.namesv_dept.label }}
+                {{ form.namesv_dept }}
+            </fieldset>
+            <fieldset class="form-field">
+                {{ form.sotienno.label }}
+                {{ form.sotienno }}
+            </fieldset>
+
+            <fieldset class="form-field">
+                {{ form.sodu.label }}
+                {{ form.sodu(value = current_user.sodu, disabled_="disabled") }}
+            </fieldset>
+            <fieldset class="form-field">
+                {{ form.sotien.label }}
+                {{ form.sotien }}
+            </fieldset>
+            <fieldset class="form-field">
+                {{ form.hidden }}
+            </fieldset>
+            <fieldset class="form-field">
+                
+                {{ form.agreement }}
+                {{ form.agreement.label }}
+            </fieldset>
+
+            {{ form.submit }}
+  
+        </form>
+    </div>
+    
+</div> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='ajax.js') }}"></script>
+
+
+{% endblock %}

@@ -1,6 +1,6 @@
-from flask import render_template,flash,jsonify
+from flask import render_template,flash,jsonify, redirect,url_for
 from . import main
-from .forms import submitForm, purchase_form,UpdateBallanceForm, hocphi_form
+from .forms import submitForm, purchase_form,UpdateBallanceForm, hocphi_form, paymentForm, OTPForm
 from flask_login import login_user, logout_user, login_required, current_user
 from random import randint
 from .. import db
@@ -45,8 +45,7 @@ def fee(mssv):
     else: 
         sotien =hocphi.sotien
         idd = hocphi.id
-    send_email(current_user.email, 'Confirm Your Purchase',
-                   'authOTP', otp='123456' , user=current_user)
+
     return jsonify({ 'name' : user.username, 'hocphi' : sotien , 'id' : idd})
 
 
@@ -67,27 +66,30 @@ def info():
 @login_required
 def purchase():
     # form = purchase_form() #Form thanh toán
-    form1 = hocphi_form()
-    hocphi = None #form để lấy masv của người được nộp
-    
-    if form1.validate_on_submit():
-        hocphi = HocPhi.query.filter_by(masv=form1.masv.data).first()
+    form1 = paymentForm()
+    if form1.is_submitted():
+        idd = int(form1.hidden.data)
+        hocphi = HocPhi.query.get(idd)
         if hocphi.otp:
             flash('OTP is sent. Check your email, please!!!')
             return redirect(url_for('authOTP', id=hocphi.id))
+
         otp = hocphi.generate_confirmation_otp()
+        print(otp)
         send_email(current_user.email, 'Confirm Your Purchase',
                    'authOTP', otp= otp , user=current_user)
         flash('A OTP has been sent to you by email.')
-        return redirect(url_for('authOTP', id=hocphi.id)) 
-    return render_template('payment.html', form=form1, hocphi= hocphi)
+        return redirect(url_for('main.authOTP', idd=hocphi.id)) 
+    
+    return render_template('purchase.html', form=form1)
 
 @main.route('/authOTP', methods=['GET', 'POST'])
 @login_required
 def authOTP():
     form = OTPForm()
+    idd  = int(request.args['idd'])
     if form.validate_on_submit():
-        hocphi = HocPhi.query.get(id)
+        hocphi = HocPhi.query.get(idd)
         
         user = User.query.filter_by(masv=hocphi.masv).first() #User được nộp tiền
         if form.otp.data is None:
@@ -102,8 +104,7 @@ def authOTP():
                    'index' )
             return redirect(url_for('index.html'))
         flash("Đã có lỗi xảy ra. Vui lòng kiểm tra mã OTP.")
-    return redirect(url_for('authOTP', form=form))
-     #chưa biết là sau khi redirect thì user và id còn được lưu hay không. trong code được hiểu là nó có lưu lại thông tin
+    return render_template('authOTP.html', form=form)
 
 
 

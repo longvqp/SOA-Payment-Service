@@ -7,6 +7,23 @@
 
 {% block page_content%}
 
-<h1>This is authOTp PAGE</h1>
+<div class="form-wrapper">
+    <h2 class="title">PAYMENT</h2>
+
+    <form method="POST" action="{{ url_for('main.authOTP') }}">
+        
+        
+        <fieldset class="form-field">
+            {{ form.otp.label }}
+            {{ form.otp }}
+        </fieldset>
+        
+
+        {{ form.submit }}
+
+    </form>
+</div>
+
+
 
 {% endblock %}

@@ -1,24 +1,27 @@
 
 $(document).ready(function() {
-    $('#masv_no').focusout(function() {
+    $('#masv_dept').focusout(function() {
 
         $.ajax({
             type : 'GET',
             url : '/tuition/'+$(this).val()
         })
         .done(function(data) {
-            console.log(data)
-            console.log(data.hocphi.toString())
+
             if (data.name == null) {
                 alert('Không tìm thấy sinh viên')
             }
-            $('.nameSvNo').text(data.name)
+            $('#namesv_dept').val(data.name)
+            $('#namesv_dept').prop('disabled', true);
             if (data.hocphi == 'None') {
                 alert('Sinh viên đã thanh toán đầy đủ học phí')
-                $('.tienno').text("0")
+                $('.sotienno').val("0")
             }
-            $('.tienno').text(data.hocphi.toString())
-                  
+            $('#sotienno').val(data.hocphi)
+            $('#sotienno').prop('disabled', true);
+            $('#sotien').val(data.hocphi)
+            $('#sotien').prop('disabled', true);
+            $('#hidden').val(data.id)
         })
     })
 });

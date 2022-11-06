@@ -5,14 +5,17 @@ from flask_login import UserMixin, AnonymousUserMixin
 from . import db,login_manager
 from random import randint
 import pyotp
-
+from sqlalchemy import Unicode
+from sqlalchemy_utils import EncryptedType
+from sqlalchemy_utils.types.encrypted.encrypted_type import FernetEngine
+from cryptography.fernet import Fernet
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
     masv = db.Column(db.String(64), unique=True, index=True)
-    username = db.Column(db.String(64), unique=True, index=True)
+    name = db.Column(db.String(128), index=True)
     sdt = db.Column(db.String(10), unique=True) #sdt của sinh viên không được trùng nhau
     password_hash = db.Column(db.String(128))
     sodu = db.Column(db.Float, default=0)
@@ -46,27 +49,35 @@ class HocPhi(db.Model):
     masv = db.Column(db.String(64), db.ForeignKey('users.masv'), nullable=False)
     sotien = db.Column(db.Float, nullable=False, default=0)
     otp = db.Column(db.String(6),unique=True, index=True)
+    secret_key = db.Column(db.String(32),unique=True, index=True)
     status = db.Column(db.String(10), nullable=False , default='Wait')
     lichsu = db.relationship('LichSu', backref='hocphis', lazy=True)
     
-    def generate_confirmation_otp(self, expiration=300):
-        s = ''
-        otp = ''
-        listotp = self.listOTP()
-        while True:
-            otp = "%06d" % randint(0,999999)
-            s = Serializer(otp, expiration)
-            if s not in listotp:
-                break
-        self.otp = s
+    def generate_confirmation_otp(self):
+        # s = ''key=db_encryption_key,
+        # otp = ''
+        # listotp = self.listOTP()
+        # while True:
+        #     otp = "%06d" % randint(0,999999)
+        #     s = Serializer(otp, expiration)
+        #     if s not in listotp:
+        #         break
+        secret = pyotp.random_base32()
+        self.secret_key = secret
+        totp = pyotp.TOTP(self.secret_key, interval=300, digits=6)
+        ot = totp.now()
+        self.otp = totp
         db.session.commit()
-        return otp
+        return ot
 
     def confirm(self, otp, user_id):
-        s = Serializer(otp) 
-        if s != self.otp:
+        totp = pyotp.TOTP(self.secret_key, interval=300, digits=6)
+        if not totp.verify(otp) :
             return False
+        # if s != self.otp:
+        #     return False
         self.otp = None
+        self.secret_key = None
         self.status = 'Done'
         user = User.query.get(user_id)
         sodu = user.sodu
@@ -75,23 +86,26 @@ class HocPhi(db.Model):
         db.session.add(lichsu)
         return True
 
-    def reset_otp(self, expiration=300):
-        s =''
-        otp = ''
-        listotp = self.listOTP()
-        while True: #kiểm tra otp có bị trùng hay không
-            otp = "%06d" % randint(0,999999)
-            s = Serializer(otp, expiration)
-            if s not in listotp:
-                break
-        self.otp = s
+    def reset_otp(self):
+        # s =''
+        # otp = ''
+        # listotp = self.listOTP()
+        # while True: #kiểm tra otp có bị trùng hay không
+        #     otp = "%06d" % randint(0,999999)
+        #     s = Serializer(otp, expiration)
+        #     if s not in listotp:
+        #         break
+        
+        totp = pyotp.TOTP(self.secret_key, interval=300, digits=6)
+        t = totp.now()
+        self.otp = t
         db.session.commit()
-        return otp
+        return t
 
-    @property
-    def listOTP():
-        hocphi_otp = db.session.query(HocPhi.otp)
-        return hocphi_otp.all()
+    # @property
+    # def listOTP():
+    #     hocphi_otp = db.session.query(HocPhi.otp)
+    #     return hocphi_otp.all()
 
 class LichSu(db.Model):
     __tablename__ = 'histories'
