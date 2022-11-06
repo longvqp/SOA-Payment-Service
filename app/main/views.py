@@ -46,7 +46,7 @@ def fee(mssv):
         sotien =hocphi.sotien
         idd = hocphi.id
 
-    return jsonify({ 'name' : user.username, 'hocphi' : sotien , 'id' : idd})
+    return jsonify({ 'name' : user.name, 'hocphi' : sotien , 'id' : idd})
 
 
 @main.route('/info', methods=['GET','POST'])

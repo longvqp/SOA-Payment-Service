@@ -31,7 +31,7 @@ def register():
     if form.validate_on_submit():
         user = User(masv=form.masv.data,
                     email=form.email.data.lower(),
-                    username=form.username.data,
+                    name=form.name.data,
                     password=form.password.data)
         db.session.add(user)
         db.session.commit()
