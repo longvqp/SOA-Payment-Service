@@ -1,6 +1,0 @@
-.DS_Store
-__pycache__
-*.pyc
-env
-data-dev.sqlite
-data.sqlite

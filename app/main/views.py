@@ -1,4 +1,4 @@
-from flask import render_template,flash,jsonify, redirect,url_for
+from flask import render_template,flash,jsonify, redirect,url_for, request
 from . import main
 from .forms import submitForm, purchase_form,UpdateBallanceForm, hocphi_form, paymentForm, OTPForm
 from flask_login import login_user, logout_user, login_required, current_user
@@ -68,19 +68,24 @@ def purchase():
     # form = purchase_form() #Form thanh toán
     form1 = paymentForm()
     if form1.is_submitted():
+        
         idd = int(form1.hidden.data)
         hocphi = HocPhi.query.get(idd)
-        if hocphi.otp:
-            flash('OTP is sent. Check your email, please!!!')
-            return redirect(url_for('authOTP', id=hocphi.id))
-
-        otp = hocphi.generate_confirmation_otp()
-        print(otp)
-        send_email(current_user.email, 'Confirm Your Purchase',
+        print(current_user.sodu)
+        print(hocphi.sotien)
+        if(current_user.sodu >= hocphi.sotien):
+            if hocphi.otp:
+                flash('OTP is sent. Check your email, please!!!')
+                return redirect(url_for('main.authOTP', idd=hocphi.id))
+            otp = hocphi.generate_confirmation_otp()
+            print(otp)
+            send_email(current_user.email, 'Confirm Your Purchase',
                    'authOTP', otp= otp , user=current_user)
-        flash('A OTP has been sent to you by email.')
-        return redirect(url_for('main.authOTP', idd=hocphi.id)) 
-    
+            flash('A OTP has been sent to you by email.')
+            return redirect(url_for('main.authOTP', idd=hocphi.id)) 
+        else:
+            flash('You dont have enought ballance')
+            return redirect(url_for('main.purchase', form=form1)) 
     return render_template('purchase.html', form=form1)
 
 @main.route('/authOTP', methods=['GET', 'POST'])

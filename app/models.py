@@ -66,7 +66,7 @@ class HocPhi(db.Model):
         self.secret_key = secret
         totp = pyotp.TOTP(self.secret_key, interval=300, digits=6)
         ot = totp.now()
-        self.otp = totp
+        self.otp = ot
         db.session.commit()
         return ot
 
