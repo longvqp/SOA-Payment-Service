@@ -1,4 +1,4 @@
-Chào {{ user.username }},
+Chào {{ user.name }},
 
 Bạn đã thanh toán thành công học phí.
 

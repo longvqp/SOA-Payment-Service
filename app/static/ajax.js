@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
     $('#masv_dept').focusout(function() {
-
+        
         $.ajax({
             type : 'GET',
             url : '/tuition/'+$(this).val()
@@ -26,9 +26,12 @@ $(document).ready(function() {
                     $('#sotien').val(data.hocphi)
                     $('#sotien').prop('disabled', true);
                     $('#hidden').val(data.id)
+                   
                 }
             }
            
         })
     })
+
+    
 });

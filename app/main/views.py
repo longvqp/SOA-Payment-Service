@@ -55,16 +55,17 @@ def purchase():
         hocphi = HocPhi.query.get(idd)
         print(current_user.sodu)
         print(hocphi.sotien)
+        print(hocphi.id)
         if(current_user.sodu >= hocphi.sotien):
             if hocphi.otp:
                 flash('OTP is sent. Check your email, please!!!')
                 return redirect(url_for('main.authOTP', idd=hocphi.id))
             otp = hocphi.generate_confirmation_otp()
-            print(otp)
+            # print(otp)
             send_email(current_user.email, 'Confirm Your Purchase',
                    'authOTP', otp= otp , user=current_user)
             flash('A OTP has been sent to you by email.')
-            return redirect(url_for('main.authOTP', idd=hocphi.id)) 
+            return redirect(url_for('main.authOTP', idd=hocphi.id, masv=hocphi.masv)) 
         else:
             flash('You dont have enought ballance')
             return redirect(url_for('main.purchase', form=form1)) 
@@ -74,24 +75,29 @@ def purchase():
 @login_required
 def authOTP():
     form = OTPForm()
-    idd  = int(request.args['idd'])
-    if form.validate_on_submit():
-        hocphi = HocPhi.query.get(idd)
+    idd  = (request.args['idd'])
+    hocphi = HocPhi.query.get(idd)
+    if form.is_submitted():
+        print("OTP:" ,form.otp.data)
+        print("Hoc phi", hocphi.id)    
         
         user = User.query.filter_by(masv=hocphi.masv).first() #User được nộp tiền
         if form.otp.data is None:
             flash('vui lòng nhập OTP') #validation
         
-        if hocphi.confirm(form.otp.data, current_user.id):
+        if hocphi.confirm(form.otp.data, current_user.id, hocphi.id):
             db.session.commit()
             flash('Purchase successfully!!!')
             send_email(current_user.email, 'Purchase successfully.', #gửi email thành công cho người nộp
-                   'index' )
+                   'index',  user=current_user)
             send_email(user.email, 'Purchase successfully.', #gửi email thành công cho người được nộp
-                   'index' )
-            return redirect(url_for('index.html'))
+                   'index' , user=user)
+            return redirect(url_for('main.index'))
         flash("Đã có lỗi xảy ra. Vui lòng kiểm tra mã OTP.")
-    return render_template('authOTP.html', form=form)
+    url_form=url_for('main.authOTP', idd=idd)
+    
+    print(url_form)
+    return render_template('authOTP.html', form=form, url=url_form)
 
 
 

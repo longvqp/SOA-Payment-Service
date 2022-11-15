@@ -10,14 +10,13 @@
 <div class="form-wrapper">
     <h2 class="title">PAYMENT</h2>
 
-    <form method="POST" action="{{ url_for('main.authOTP') }}">
+    <form method="POST" action="{{url }}">
         
         
         <fieldset class="form-field">
             {{ form.otp.label }}
             {{ form.otp }}
         </fieldset>
-        
 
         {{ form.submit }}
 

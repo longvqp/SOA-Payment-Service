@@ -37,8 +37,9 @@ class UpdateBallanceForm(FlaskForm):
 
 class OTPForm(FlaskForm):
      otp = IntegerField('OTP: ', validators=[DataRequired(), Length(6)])
+     idd = HiddenField('IDhidden')
      submit = SubmitField('Done')
-     
+
 
 class hocphi_form(FlaskForm):
      masv = StringField('Student ID:', validators=[DataRequired(), Length(1,8)])

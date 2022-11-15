@@ -71,21 +71,24 @@ class HocPhi(db.Model):
         db.session.commit()
         return ot
 
-    def confirm(self, otp, user_id):
+    def confirm(self, otp, user_id, hocphi_idd):
+        otp = str(otp)
         totp = pyotp.TOTP(self.secret_key, interval=300, digits=6)
+        # print(type(otp))
+        # print(pyotp.TOTP(self.secret_key, interval=300, digits=6).verify('492039'))
+        
         if not totp.verify(otp) :
             return False
-        # if s != self.otp:
-        #     return False
-        self.otp = None
-        self.secret_key = None
-        self.status = 'Done'
-        user = User.query.get(user_id)
-        sodu = user.sodu
-        user.sodu = sodu - self.sotien
-        lichsu = LichSu(hocphi_id=hocphi.id, masv_nop=user.masv)
-        db.session.add(lichsu)
-        return True
+        else:
+            self.otp = None
+            self.secret_key = None
+            self.status = 'Done'
+            user = User.query.get(user_id)
+            sodu = user.sodu
+            user.sodu = sodu - self.sotien
+            lichsu = LichSu(hocphi_id=hocphi_idd, masv_nop=user.masv)
+            db.session.add(lichsu)
+            return True
 
     def reset_otp(self):
         # s =''
